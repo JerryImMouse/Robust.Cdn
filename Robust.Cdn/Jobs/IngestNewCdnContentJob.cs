@@ -328,6 +328,10 @@ public sealed class IngestNewCdnContentJob(
                 versionIdx += 1;
             }
         }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while inserting new blobs for fork: {Fork}", fork);
+        }
         finally
         {
             blob?.Dispose();
