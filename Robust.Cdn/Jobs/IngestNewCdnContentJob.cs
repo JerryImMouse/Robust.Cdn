@@ -41,7 +41,7 @@ public sealed class IngestNewCdnContentJob(
         var connection = cdnDatabase.Connection;
         var transaction = connection.BeginTransaction();
 
-        List<string> newVersions;
+        List<string> newVersions = new();
         try
         {
             newVersions = FindNewVersions(fork, connection);
@@ -60,6 +60,10 @@ public sealed class IngestNewCdnContentJob(
             logger.LogDebug("Committing database");
 
             transaction.Commit();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to commit database");
         }
         finally
         {

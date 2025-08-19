@@ -5,6 +5,7 @@ using Robust.Cdn.Helpers;
 
 namespace Robust.Cdn.Jobs;
 
+[DisallowConcurrentExecution]
 public sealed class MakeNewManifestVersionsAvailableJob(
     ManifestDatabase database,
     ISchedulerFactory factory,
