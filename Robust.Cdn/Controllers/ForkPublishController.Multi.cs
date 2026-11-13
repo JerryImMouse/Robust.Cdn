@@ -90,7 +90,6 @@ public sealed partial class ForkPublishController
             return BadRequest("Invalid artifact file name");
 
         var dbCon = manifestDatabase.Connection;
-        await using var tx = await dbCon.BeginTransactionAsync(cancel);
 
         var forkId = dbCon.QuerySingle<int>("SELECT Id FROM Fork WHERE Name = @Name", new { Name = fork });
         var versionId = dbCon.QuerySingleOrDefault<int?>("""
@@ -135,7 +134,7 @@ public sealed partial class ForkPublishController
         var forkId = dbCon.QuerySingle<int>("SELECT Id FROM Fork WHERE Name = @Name", new { Name = fork });
         var versionMetadata = dbCon.QuerySingleOrDefault<VersionMetadata>(
             """
-            SELECT Version, EngineVersion, SourceUrl, SourceCommitId, SourceBranchName, EngineSourceUrl, EngineSourceCommitId, EngineSourceBranchName 
+            SELECT Version, EngineVersion, SourceUrl, SourceCommitId, SourceBranchName, EngineSourceUrl, EngineSourceCommitId, EngineSourceBranchName
             FROM PublishInProgress
             WHERE Version = @Name AND ForkId = @Fork
             """,
